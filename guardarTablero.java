@@ -23,7 +23,6 @@ public class guardarTablero{
 	}catch (IOException e){
 	} finally {
 	    if (escritor != null){
-		//System.out.println("Se guardaron los datos.");
 	    }else {
 		System.out.println("No hay ningun archivo abierto.");
 	    }	    

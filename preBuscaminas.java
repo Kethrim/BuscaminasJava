@@ -9,7 +9,6 @@ public class preBuscaminas{
     private int columnas;
     public String usuario;
     private int opcion;
-    // private boolean ganar;
     private Tablero t = null;
 
     /**
@@ -20,7 +19,7 @@ public class preBuscaminas{
     public void menu(){
 	System.out.println( "    ╔═══════════════════════════════════════════════════════════════════╗\n"+
 		   "    ║\t                                                             \t║\n"+
-		   "    ║\t\t\t\tBienvenido.\t                        ║\n"+
+		   "    ║\t\t\tBienvenido a Buscaminas.                        ║\n"+
 		   "    ║\t¿Qué desea hacer? Escribe el número de la opción que elijas.   \t║\n"+
 		   "    ║\t                                                            \t║\n"+
 		   "    ║\t1.Jugar una partida nueva.                                      ║\n"+
@@ -73,10 +72,9 @@ public class preBuscaminas{
 			    if (x<= t.obtenerFilas() && y<= t.obtenerColumnas()){
 				if (!t.celdaMarcada(x,y)){
 				    t.revelarCelda(x,y);
-				    //System.out.println(t);
 				    bandera2=false;
 				    if (t.celdasNoVistas() == t.obtenerBombas()){
-					t.verTodo();
+					//t.verTodo();
 					System.out.println(t);
 					System.out.println("\t¡Ganaste, felicidades! 🏆");
 					bandera2 = false;
@@ -250,7 +248,7 @@ public class preBuscaminas{
 		} catch(java.util.InputMismatchException e){
 		    throw new datosIncorrectos("\tEse tipo de dato no está perimitido.");
 		}
-		if (filas < 15){
+		if (filas < 80){
 		    if (filas<0 || filas<8 ){
 			System.out.println("\tEl buscaminas no puede tener menos de 8 filas.");
 			
@@ -261,8 +259,8 @@ public class preBuscaminas{
 			bandera = false;
 		    }
 		} else {
-		    if (filas >= 15){
-			System.out.println("\tNo se aceptan más de 14 filas.");
+		    if (filas >= 80){
+			System.out.println("\tNo se aceptan más de 80 filas.");
 		    }
 		}
 	    }catch (datosIncorrectos e){
@@ -291,7 +289,7 @@ public class preBuscaminas{
 		} catch(java.util.InputMismatchException e){
 		    throw new datosIncorrectos("\tEse tipo de dato no está perimitido.");
 		}
-		if (columnas < 15){
+		if (columnas < 80){
 		    if ( columnas<0 || columnas<8){
 			System.out.println("\tEl buscaminas no puede tener menos de 8 columnas.");
 			
@@ -302,8 +300,8 @@ public class preBuscaminas{
 			bandera = false;
 		    }
 		} else {
-		    if (columnas >= 15)
-			System.out.println("No se aceptan más de 14 columnas.");
+		    if (columnas >= 80)
+			System.out.println("No se aceptan más de 80 columnas.");
 		}
 	    } catch (datosIncorrectos e){
 		System.out.println(e.getMessage());

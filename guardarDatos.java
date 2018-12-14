@@ -23,10 +23,9 @@ public class guardarDatos{
 	    escritor = new ObjectOutputStream (new FileOutputStream(archivo));
 	    escritor.writeObject(new datos(nombre,f,c,n));
 	}catch (IOException e){
-	    //System.out.println("Error al guardar");
 	} finally {
 	    if (escritor != null){
-		System.out.println("El archivo se cerro.");
+		System.out.println("El archivo se guardó.");
 	    }else {
 		System.out.println("No hay ningun archivo abierto.");
 	    }	    

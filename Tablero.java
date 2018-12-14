@@ -136,6 +136,7 @@ public class Tablero implements java.io.Serializable{
     /**
      * Método que muestra todas las casillas sin bombas del tablero
      */
+    /*
     public void verTodo(){
 	int k=0;
 	for (int i=0; i<obtenerFilas()-1; i++){
@@ -148,6 +149,7 @@ public class Tablero implements java.io.Serializable{
 	    }
 	}
     }
+    */
 
     /**
      * Método que regresa el número de celdas que no han sido reveladas.
@@ -156,7 +158,6 @@ public class Tablero implements java.io.Serializable{
 
     public int celdasNoVistas(){
 	int c = 0;
-
 	for(int i=0; i< this.obtenerFilas(); i++){
 	    for (int j=0; j< this.obtenerColumnas(); j++){
 		if (!tablero [i] [j].celdaVista()){
@@ -164,7 +165,6 @@ public class Tablero implements java.io.Serializable{
 		}
 	    }
 	}
-
 	return c;
     }
     
@@ -201,13 +201,16 @@ public class Tablero implements java.io.Serializable{
     
     public void revelarCelda(int x, int y){		 
 	if (!(tablero[x-1] [y-1] instanceof celdaMinada)){
-	    if (tablero[x-1] [y-1].obtenerContado() == 0){
-		this.cerosAlrededor(x-1,y-1);		
-	    } else {
-		tablero [x-1] [y-1].verCelda();
+	    if (tablero [x-1][y-1].celdaVista()){
+		System.out.println("\tEsa celda ya ha sido vista.");
+	    } else {	    
+		if (tablero[x-1] [y-1].obtenerContado() == 0){
+		    this.revelarTodo(x-1,y-1);		
+		} else {		
+		    tablero [x-1] [y-1].verCelda();	       	
+		}
 	    }
-	} else {
-	    
+	} else {	    
 	    ((celdaMinada)tablero [x-1] [y-1]).explotar();
 	    this.explotarTodo();
 	    perder = true;
@@ -224,7 +227,7 @@ public class Tablero implements java.io.Serializable{
 	if (!(tablero[x-1][y-1].celdaVista())){
 	    tablero [x-1][y-1].marcar();
 	} else {
-	    System.out.println("No se puede marcar una celda que ya ha sido vista.");
+	    System.out.println("\tNo se puede marcar una celda que ya ha sido vista.");
 	}
    }
 
@@ -248,7 +251,7 @@ public class Tablero implements java.io.Serializable{
 	if (tablero [x-1][y-1].estaMarcada()){
 	    tablero [x-1][y-1].desmarcar();
 	} else {
-	    System.out.println("La celda no puede desmarcarse si no ha sido marcada previamente.");
+	    System.out.println("\tLa celda no puede desmarcarse si no ha sido marcada previamente.");
 	}
 	
     }
@@ -266,64 +269,108 @@ public class Tablero implements java.io.Serializable{
      * Método para obtener las celdas con ceros alrededor de una celda mediante la división del tablero en cuatro duadrantes
      * @param x -la coordenada x de la celda.
      * @param y -la coordenada y de la celda.
-     */
+     */   
 
-    private void cerosAlrededor(int x, int y){
-		
-	if (tablero [x][y].obtenerContado() == 0){
-	    tablero [x] [y].verCelda();	
-	    // cuadrantes superiores
-	    if 	(x<(this.obtenerFilas()/2)){
-		// cuadrante izquierdo
-		if (y< (this.obtenerColumnas()/2) && x<(this.obtenerFilas()/2)){	
-		    if ((y+1)<this.obtenerColumnas()){
-			this.cerosAlrededor(x,y+1);
-		    }      
-		    if ((x+1)< this.obtenerFilas()){
-			this.cerosAlrededor(x+1,y);
-		    }
-		    
-		    // cuadrante derecho
-		} else {
-		    if(y>(this.obtenerColumnas()/2) && x<(this.obtenerFilas()/2)){
-			
-			if ((x+1)< this.obtenerFilas()){
-			    this.cerosAlrededor(x+1,y);
-			}
-			
-			if ((y-1)>=0){
-			    this.cerosAlrededor(x,y-1);
-			}
+    private void revelarTodo(int x, int y){
+	tablero [x] [y].verCelda();
+	
+	if ((x-1)>=0 && (y-1)>=0){
+	    if (!(tablero [x-1] [y-1] instanceof celdaMinada)){
+		if (!(tablero[x-1][y-1].celdaVista())){
+		    if (tablero [x-1] [y-1].obtenerContado() == 0){
+			revelarTodo(x-1,y-1);
+		    } else {
+			tablero [x-1] [y-1].verCelda();
 		    }
 		}
-	    }
-	    // cuadrantes inferiores
-	    
-	    else {
-		// cuadrante derecho
-		if (y < (this.obtenerColumnas()/2) && x>(this.obtenerFilas()/2)){
-		    if ((x-1)>=0){
-			this.cerosAlrededor(x-1,y);
-		    }
-		    
-		    if ((y+1)< this.obtenerColumnas()){
-			this.cerosAlrededor(x,y+1);
-		    } 
-		} else {
-		    if (y> (this.obtenerColumnas()/2) && x> (this.obtenerFilas()/2)){
-			// cuadrante izquierdo
-			if ((y-1)>=0){
-			    this.cerosAlrededor(x,y-1);
-			}
-			
-			if ((x-1)>=0){
-			    this.cerosAlrededor(x-1,y);
-			}
-		    }
-		}
-		
 	    }
 	}
+	
+	if ((x-1)>=0){
+	    if (!(tablero [x-1] [y] instanceof celdaMinada)){
+		if (!(tablero [x-1] [y].celdaVista())){
+		    if (tablero [x-1][y].obtenerContado() == 0){
+			revelarTodo(x-1,y);
+		    } else {
+			tablero [x-1][y].verCelda();
+		    }
+		}
+	    }
+	}
+
+	if ((x-1)>=0 && (y+1)<(obtenerColumnas())){
+	    if (!(tablero [x-1] [y+1] instanceof celdaMinada)){
+		if (!(tablero [x-1] [y+1].celdaVista())){
+		    if (tablero [x-1][y+1].obtenerContado() == 0){
+			revelarTodo(x-1,y+1);
+		    } else {
+			tablero [x-1] [y+1].verCelda();
+		    }
+		}
+	    }
+	}
+
+	if ((y-1)>=0){
+	    if (!(tablero [x] [y-1] instanceof celdaMinada)){
+		if (!(tablero [x] [y-1].celdaVista())){
+		    if (tablero [x][y-1].obtenerContado() == 0){
+			revelarTodo(x,y-1);
+		    } else {
+			tablero [x] [y-1].verCelda();
+		    }
+		}
+	    }
+	}
+
+	if ((y+1)< (obtenerColumnas())){
+	    if (!(tablero [x] [y+1] instanceof celdaMinada)){
+		if (!(tablero [x] [y+1].celdaVista())){
+		    if (tablero [x][y+1].obtenerContado() == 0){
+			revelarTodo(x,y+1);
+		    } else {
+			tablero [x][y+1].verCelda();
+		    }
+		}
+	    }
+	}
+
+	if ((x+1)<(obtenerFilas()) && (y-1)>=0){
+	    if (!(tablero [x+1] [y-1] instanceof celdaMinada)){
+		if (!(tablero [x+1] [y-1].celdaVista())){
+		    if (tablero [x+1][y-1].obtenerContado() == 0){
+			revelarTodo(x+1,y-1);
+		    } else {
+			tablero [x+1][y-1].verCelda();
+		    }
+		}
+	    }
+	}
+
+	if ((x+1)<(obtenerFilas())){
+	    if (!(tablero [x+1][y] instanceof celdaMinada)){
+		if (!(tablero [x+1][y].celdaVista())){
+		    if (tablero [x+1][y].obtenerContado() == 0){
+			revelarTodo(x+1,y);
+		    } else {
+			tablero[x+1][y].verCelda();
+		    }
+		}
+	    }
+	}
+
+	if ((x+1)<(obtenerFilas()) && (y+1)<(obtenerColumnas())){
+	    if (!(tablero [x+1] [y+1] instanceof celdaMinada)){
+		if (!(tablero [x+1] [y+1].celdaVista())){
+		    if (tablero [x+1][y+1].obtenerContado() == 0){
+			revelarTodo(x+1,y+1);
+		    } else {
+			tablero [x+1][y+1].verCelda();
+		    }
+		}
+	    }
+	}
+	
+	
     }
 
     
@@ -332,14 +379,14 @@ public class Tablero implements java.io.Serializable{
      * @return formato del tablero
      */
     public String toString(){
-	String c= "|  ";
+	String c= "|";
 	for (int i=0; i< obtenerFilas(); i++){
 	    for (int j=0; j < obtenerColumnas(); j++){
-		c += tablero[i] [j]+"  |  ";
+		c += tablero[i] [j]+"|";
 	    }
-	    c+="\n\n|  ";
+	    c+="\n|";
 	}
 
-	return c+"\b\b\b ";	    
+	return c+"\b ";	    
     }
 }

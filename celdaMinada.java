@@ -32,9 +32,13 @@ public class celdaMinada extends celda implements java.io.Serializable{
 
     public String toString(){
 	if (explotar){
-	    return "  💣 ";
+	    return "💣";
 	} else {
-	    return "  ❓ ";
+	    if (!estaMarcada()){
+		return "❓";
+	    } else {
+		return "🚩";
+	    }
 	}
     }
 }

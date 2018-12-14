@@ -24,10 +24,9 @@ public class mostrarDatos{
 	} catch (IOException e){
 	} finally {
 	    if (lector != null){
-		//System.out.println("Se leyeron los datos");
 		try { lector.close();} catch (IOException e) { }
 	    } else {
-		System.out.println("\tEl archivo no existe.");
+		System.out.println("\tEl archivo en el que \"guardaste\" tus datos no existe.");
 
 	    }
 	}

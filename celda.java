@@ -89,24 +89,16 @@ public class celda implements java.io.Serializable{
 
     public String toString(){
 	String t= "";
-	if (celdaVista){	    
-	    if (!estaMarcada()){
-		t = "  "+i+"  ";
-	    }
-	} else {	   
-	    if (estaMarcada()){
-		t="  🚩 ";
-	    } else {
-		 t ="  ❓ ";
-	    }
-	}
-	return t;
-    }
 
-    public static void main(String [] args){
-	celda a = new celda();
-	System.out.println(a);
-	a.marcar();
-	System.out.println(a);	
+	if (estaMarcada()){
+	    	t="🚩";		
+	} else
+	    if (celdaVista){	    		
+		t = " "+i+"";	    
+	    } else {	   	    
+		t ="❓";
+		
+	    }
+	return t;
     }
 }
